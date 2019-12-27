@@ -15,31 +15,41 @@ Output: "bb"
 */
 
 class Solution {
-    public String longestPalindrome(String s) {
-        int maxPalindrome = 0, maxPalindromeStart = 0;
-                    
-        // for each character, find the max palindrome
-        for (int i = 0; i < s.length(); i++) {
-            int curMax = 0, j = i, k = s.length() - 1;
-            
-            while (j <= k) {
-                if (s.charAt(j) == s.charAt(k)) {
-                    curMax += (j == k)? 1:2;
-                    j++;
-                    k--;
-                } else {
-                    curMax = 0;
-                    k--;
-                }  
+    
+    public String longestPalindrome (String s) {
+        if (s == null)
+            return null;
+        
+        int strLen = s.length();
+        
+        if (strLen == 0)
+            return "";
+        
+        Boolean[][] table = new Boolean[strLen][strLen];
+        int maxLen = 1 , startI = 0, end = 0;
+        
+        // for each possible length of palindrome check the palindrome and update the table.
+        // start from the begining of the string check the palindrome for the current length.
+        for (int len = 1; len <= strLen; len++) {
+            for (int start = 0;  start <= strLen - len; start++) {
+                end = start + len - 1;
+                
+                if (s.charAt(start) == s.charAt(end)) {
+                    if (len <= 2)
+                        table[start][end] = true;
+                    else
+                        table[start][end] = table[start+1][end-1];
+                } else
+                    table[start][end] = false;
+                
+                if (len > 1 && table[start][end] == true) {
+                    maxLen = (maxLen < len)? len : maxLen;
+                    startI = start;
+                }
             }
-            
-            // check if this is longer
-            if (curMax > maxPalindrome) {
-                maxPalindrome = curMax;
-                maxPalindromeStart = i;
-            }            
         }
-        return s.substring(maxPalindromeStart, maxPalindromeStart+maxPalindrome);
+        
+        return s.substring(startI, startI + maxLen);
     }
 }
 
