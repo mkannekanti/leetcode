@@ -31,16 +31,13 @@ class Solution {
                     curMax = 0;
                     k--;
                 }  
-                System.out.println("loop: " + curMax + " " + j + " " + k);
             }
             
             // check if this is longer
             if (curMax > maxPalindrome) {
                 maxPalindrome = curMax;
                 maxPalindromeStart = i;
-            }
-            
-            System.out.println(curMax + " " + i);
+            }            
         }
         return s.substring(maxPalindromeStart, maxPalindromeStart+maxPalindrome);
     }
